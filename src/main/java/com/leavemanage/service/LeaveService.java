@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.leavemanage.entity.Leaves;
 import com.leavemanage.repository.LeaveRepository;
-
 @Service
 public class LeaveService {
 	@Autowired
@@ -25,13 +24,22 @@ public class LeaveService {
 		return leaveRepository.findByLeaveId(leaveId);
 	}
 	
-public ResponseEntity<Leaves> applyLeave(Leaves leaves) {
+	public ResponseEntity<Leaves> applyLeave(Leaves leaves) {
 		return new ResponseEntity<Leaves>(leaveRepository.save(leaves),HttpStatus.CREATED);
 	}
 	
 	public List<Leaves> getAllLeaves(){
 		return leaveRepository.findAll();
 	}
-
+	
+	public ResponseEntity<Leaves> deleteLeaveById(String email){
+		if(leaveRepository.existsById(email)) {
+			leaveRepository.deleteById(email);
+			return new ResponseEntity<Leaves>(HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<Leaves>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 }

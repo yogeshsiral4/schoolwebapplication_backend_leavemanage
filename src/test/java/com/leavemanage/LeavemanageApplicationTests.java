@@ -85,4 +85,32 @@ class LeavemanageApplicationTests {
      
 	}
 	
+//Test for delete applied leave
+	@Test
+	@Order(4)
+	void DeleteLeaveTest() {
+		AuthRequest authCheck = new AuthRequest();
+		authCheck.setEmail("mohansharma@gmail.com");
+		authCheck.setPassword("mohan123");
+		authCheck.setRole("Student");
+		
+	String tokenn = given().header("Content-type","application/json").contentType(ContentType.JSON).accept(ContentType.JSON)
+		   .body(authCheck)
+		   .when()
+		   .post("http://localhost:9192/home/login")
+		   .then()
+		   .assertThat().statusCode(200)
+		   .extract().response().asString();
+	
+     
+     String token = "Bearer "+tokenn;
+     
+     given()
+	     .header("Authorization",token).contentType(ContentType.JSON).accept(ContentType.JSON)
+	     .when()
+	     .delete("http://localhost:9193/leave/delete/mohansharma@gmail.com")
+	     .then()
+	     .assertThat().statusCode(200)
+	     .extract().response();
+	}
 }
